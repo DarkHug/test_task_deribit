@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from typing import Annotated
 from sqlalchemy.orm import Session
 
+from app.clients.deribit_client import get_index_price
 from app.db.session import get_db
 from app.services import price_service
 
@@ -30,3 +31,14 @@ def get_prices_by_date(
         ticker=ticker,
         timestamp=timestamp,
     )
+
+
+@router.get("/test-deribit")
+async def test_deribit():
+    btc_price = await get_index_price("btc_usd")
+    eth_price = await get_index_price("eth_usd")
+
+    return {
+        "BTC_USD": btc_price,
+        "ETH_USD": eth_price,
+    }

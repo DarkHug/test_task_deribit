@@ -1,0 +1,1 @@
+from .price_tasks import fetch_prices
