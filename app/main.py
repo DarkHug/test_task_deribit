@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.routes import router as api_router
+from app.api import router as api_router
 
 app = FastAPI(
     title="Test Task API",
