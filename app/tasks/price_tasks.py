@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import time
 
@@ -11,17 +12,15 @@ logger = logging.getLogger(__name__)
 
 @celery_app.task
 def fetch_prices():
-    db = SessionLocal()
-
-    try:
-        btc_price = get_index_price("btc_usd")
-        eth_price = get_index_price("eth_usd")
+    async def run():
+        btc_price = await get_index_price("btc_usd")
+        eth_price = await get_index_price("eth_usd")
 
         timestamp = int(time.time())
 
-        price_service.save_price(db, "BTC_USD", btc_price, timestamp)
-        price_service.save_price(db, "ETH_USD", eth_price, timestamp)
-        logger.info("Fetched BTC: %s, ETH: %s", btc_price, eth_price)
+        async with SessionLocal() as db:
+            await price_service.save_price(db, "BTC_USD", btc_price, timestamp)
+            await price_service.save_price(db, "ETH_USD", eth_price, timestamp)
+            logger.info("Fetched BTC: %s, ETH: %s", btc_price, eth_price)
 
-    finally:
-        db.close()
+    asyncio.run(run())

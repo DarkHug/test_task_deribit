@@ -5,9 +5,10 @@ description = "Add your description here"
 requires-python = ">=3.13"
 dependencies = [
     "aiohttp>=3.13.3",
+    "asyncpg>=0.31.0",
     "celery>=5.6.2",
     "fastapi>=0.135.1",
-    "psycopg2-binary>=2.9.11",
+    "greenlet>=3.3.2",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.13.1",
     "redis>=7.3.0",
